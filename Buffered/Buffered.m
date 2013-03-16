@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Pawel Niewiadomski. All rights reserved.
 //
 
-#import <GTMOAuth2/GTMOAuth2Authentication.h>
-#import <GTMOAuth2/GTMOAuth2WindowController.h>
+#import <GTMOAuth2Authentication.h>
+#import <GTMOAuth2WindowController.h>
 #import "Buffered.h"
 
 @implementation Buffered
