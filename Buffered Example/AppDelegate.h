@@ -10,7 +10,10 @@
 
 @class Buffered;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTabViewDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTabViewDelegate> {
+@private
+    NSMutableArray *_observedVisibleItems;
+}
 
 @property (assign) IBOutlet NSWindow *window;
 @property (strong) Buffered *buffered;

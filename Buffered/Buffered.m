@@ -9,6 +9,7 @@
 #import <GTMOAuth2Authentication.h>
 #import <GTMOAuth2WindowController.h>
 #import "Buffered.h"
+#import "Model.h"
 
 @implementation Buffered
 
@@ -120,10 +121,18 @@
             if (error != nil) {
                 handler(nil, error);
             } else {
-                handler(profiles, nil);
+                handler([self asProfiles:profiles], nil);
             }
         }
     }];
+}
+
+- (NSArray*) asProfiles: (NSArray*) jsonArray {
+    NSMutableArray *profiles = [NSMutableArray array];
+    for (NSDictionary *json in jsonArray) {
+        [profiles addObject: [[Profile alloc] initWithJSON: json]];
+    }
+    return profiles;
 }
 #pragma mark -
 
