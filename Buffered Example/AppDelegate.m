@@ -136,7 +136,7 @@
         NSTableCellView *cell = [tableView makeViewWithIdentifier:@"Update" owner:self];
         return cell;
     } else {
-        NSTableCellView *cell = [tableView makeViewWithIdentifier:@"Profile" owner:self];
+        BUPendingTableCellView *cell = [tableView makeViewWithIdentifier:@"Profile" owner:self];
         Profile *profile = (Profile *) entity;
         
         // Use KVO to observe for changes of the thumbnail image
@@ -147,6 +147,15 @@
             [profile addObserver:self forKeyPath:@"avatarImage" options:0 context:NULL];
             [profile loadAvatar];
             [_observedVisibleItems addObject:entity];
+        }
+        
+        // Hide/show progress based on the thumbnail image being loaded or not.
+        if (profile.avatarImage == nil) {
+            [cell.progressIndicator setHidden:NO];
+            [cell.progressIndicator startAnimation:nil];
+            [cell.imageView setHidden:YES];
+        } else {
+            [cell.imageView setImage:profile.avatarImage];
         }
 
         return cell;
