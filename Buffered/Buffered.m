@@ -134,14 +134,14 @@
         if (error != nil) {
             handler(nil, error);
         } else {
-            NSArray* profiles = [NSJSONSerialization
+            NSDictionary* updates = [NSJSONSerialization
                                  JSONObjectWithData:retrievedData
                                  options:NSJSONReadingMutableLeaves
                                  error:&error];
             if (error != nil) {
                 handler(nil, error);
             } else {
-                handler(profiles, nil);
+                handler([updates objectForKey:@"updates"], nil);
             }
         }
     }];

@@ -10,7 +10,7 @@
 
 @class Buffered;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTabViewDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
 @property (strong) Buffered *buffered;
@@ -19,5 +19,6 @@
 @property (weak) IBOutlet NSTableView *updatesTable;
 @property (strong) NSArrayController *profiles;
 @property (strong) NSMutableDictionary *updates;
+@property (strong) NSArrayController *updatesContent;
 
 @end
