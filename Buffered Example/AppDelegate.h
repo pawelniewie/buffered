@@ -18,7 +18,6 @@
 @property (assign) IBOutlet NSWindow *window;
 @property (strong) Buffered *buffered;
 @property (weak) IBOutlet NSProgressIndicator *progress;
-@property (weak) IBOutlet NSTabView *tabs;
 @property (weak) IBOutlet NSTableView *updatesTable;
 @property (strong) NSArrayController *profiles;
 @property (strong) NSMutableDictionary *updates;

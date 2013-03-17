@@ -50,10 +50,15 @@
 }
 
 - (void) reportError: (NSError *) error {
+    [self.progress stopAnimation:self];
+    [self.progress setHidden:YES];
     NSLog(@"Error %@", error);
 }
 
 - (void) updateProfiles: (NSArray *) profiles {
+    [self.progress stopAnimation:self];
+    [self.progress setHidden:YES];
+
     [self.profiles setContent:profiles];
     for (Profile *profile in profiles) {
         __block NSString * profileId = profile.id;
@@ -134,10 +139,15 @@
     NSDictionary *entity = [self entityForRow:row];
     if (![self isProfileEntity:entity]) {
         NSTableCellView *cell = [tableView makeViewWithIdentifier:@"Update" owner:self];
+        
+        cell.textField.stringValue = [entity objectForKey:@"text"];
+        
         return cell;
     } else {
         BUPendingTableCellView *cell = [tableView makeViewWithIdentifier:@"Profile" owner:self];
         Profile *profile = (Profile *) entity;
+        
+        cell.textField.stringValue = [profile.json objectForKey:@"formatted_username"];
         
         // Use KVO to observe for changes of the thumbnail image
         if (_observedVisibleItems == nil) {
@@ -168,7 +178,11 @@
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
-    return 110;
+    if ([self isProfileEntity:[self entityForRow:row]]) {
+        return 50;
+    } else {
+        return 50;
+    }
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
