@@ -25,3 +25,7 @@
 - (void) loadAvatar;
 
 @end
+
+@interface Update : JSON<NSPasteboardReading, NSPasteboardWriting>
+
+@end

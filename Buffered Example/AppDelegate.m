@@ -11,6 +11,8 @@
 #import "AppDelegate.h"
 #import "BUPendingTableCellView.h"
 
+static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
+
 @implementation AppDelegate
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
@@ -23,6 +25,8 @@
     _profiles = [NSArrayController new];
     _updates = [NSMutableDictionary new];
     _buffered = [[Buffered alloc] initApplication:@"Buffered" withId:@"51366c442c4f4e6b02000006" andSecret:@"08a2b9d7c1c2dcc2f17f04d1caf3604b"];
+    
+    [self.updatesTable registerForDraggedTypes:@[DRAG_AND_DROP_TYPE]];
     
     if (![_buffered isSignedIn:YES]) {
         [_buffered signInSheetModalForWindow:self.window withCompletionHandler:^(NSError *error) {
@@ -52,7 +56,7 @@
 - (void) reportError: (NSError *) error {
     [self.progress stopAnimation:self];
     [self.progress setHidden:YES];
-    NSLog(@"Error %@", error);
+    [NSApp presentError:error];
 }
 
 - (void) updateProfiles: (NSArray *) profiles {
@@ -60,11 +64,16 @@
     [self.progress setHidden:YES];
 
     [self.profiles setContent:profiles];
+    
+    __block NSInteger counter = 0;
     for (Profile *profile in profiles) {
         __block NSString * profileId = profile.id;
         [self.buffered pendingUpdatesForProfile:profileId withCompletionHandler:^(NSArray *pending, NSError *error) {
             if (pending != nil) {
-                [self.updates setObject:pending forKey:profileId];
+                NSMutableArray *copy = [NSMutableArray arrayWithArray:pending];
+                [copy addObject:@{ @"text" : [NSString stringWithFormat:@"This is message %ld", (long)counter++] }];
+                [copy addObject:@{ @"text" : [NSString stringWithFormat:@"This is message %ld", (long)counter++] }];
+                [self.updates setObject:copy forKey:profileId];
                 [self performSelectorOnMainThread:@selector(updateTable) withObject:nil waitUntilDone:NO];
             }
         }];
@@ -187,6 +196,110 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     return [self.updatesContent.arrangedObjects count];
+}
+#pragma mark -
+#pragma mark Drag and Drop
+- (BOOL)tableView:(NSTableView *)tv writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard*)pboard
+{
+    if ([rowIndexes indexPassingTest:^BOOL(NSUInteger idx, BOOL *stop) {
+        return [self isProfileEntity:[self entityForRow:idx]];
+    }] == NSNotFound) {
+        // Copy the row numbers to the pasteboard.
+        NSData *zNSIndexSetData = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
+        [pboard declareTypes:[NSArray arrayWithObject:DRAG_AND_DROP_TYPE] owner:self];
+        [pboard setData:zNSIndexSetData forType:DRAG_AND_DROP_TYPE];
+        return YES;
+    }
+    return NO;
+}
+
+- (NSDragOperation)tableView:(NSTableView*)tv
+                validateDrop:(id<NSDraggingInfo>)info
+                 proposedRow:(NSInteger)row
+       proposedDropOperation:(NSTableViewDropOperation)operation {
+
+    if( [info draggingSource] == self.updatesTable ) {
+		if( operation == NSTableViewDropOn ) {
+			[tv setDropRow:row dropOperation:NSTableViewDropAbove];
+        }
+		return NSDragOperationMove;
+	} else {
+		return NSDragOperationNone;
+	}
+}
+
+- (BOOL) tableView:(NSTableView *)tableView acceptDrop:(id<NSDraggingInfo>)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)dropOperation {
+    if (row < 0)
+	{
+		row = 0;
+	}
+    
+    // if drag source is self, it's a move or copy
+    if ([info draggingSource] == tableView)
+    {
+        NSPasteboard *pasteboard = [info draggingPasteboard];
+        NSData *rowData = [pasteboard dataForType:DRAG_AND_DROP_TYPE];
+        NSIndexSet *rowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+
+		[self moveObjectsInArrangedObjectsFromIndexes:rowIndexes toIndex:row];
+            
+        // set selected rows to those that were just moved
+        // Need to work out what moved where to determine proper selection...
+        NSInteger rowsAbove = [self rowsAboveRow:row inIndexSet:rowIndexes];
+		
+		NSRange range = NSMakeRange(row - rowsAbove, [rowIndexes count]);
+		rowIndexes = [NSIndexSet indexSetWithIndexesInRange:range];
+		[self.updatesContent setSelectionIndexes:rowIndexes];
+		[self.updatesTable reloadData];
+		return YES;
+    }
+	
+    return NO;
+}
+
+- (NSUInteger)rowsAboveRow:(NSUInteger)row inIndexSet:(NSIndexSet *)indexSet
+{
+    NSUInteger currentIndex = [indexSet firstIndex];
+    NSInteger i = 0;
+    while (currentIndex != NSNotFound)
+    {
+		if (currentIndex < row) { i++; }
+		currentIndex = [indexSet indexGreaterThanIndex:currentIndex];
+    }
+    return i;
+}
+
+-(void) moveObjectsInArrangedObjectsFromIndexes:(NSIndexSet*)indexSet toIndex:(NSUInteger)insertIndex
+{
+    NSArray	*objects = [self.updatesContent arrangedObjects];
+	NSUInteger thisIndex = [indexSet lastIndex];
+	
+    NSInteger aboveInsertIndexCount = 0;
+    id object;
+    NSInteger removeIndex;
+	
+    while (NSNotFound != thisIndex)
+	{
+		if (thisIndex >= insertIndex)
+		{
+			removeIndex = thisIndex + aboveInsertIndexCount;
+			aboveInsertIndexCount += 1;
+		}
+		else
+		{
+			removeIndex = thisIndex;
+			insertIndex -= 1;
+		}
+		
+		// Get the object we're moving
+		object = [objects objectAtIndex:removeIndex];
+        
+		// In case nobody else is retaining the object, we need to keep it alive while we move it
+		[self.updatesContent removeObjectAtArrangedObjectIndex:removeIndex];
+		[self.updatesContent insertObject:object atArrangedObjectIndex:insertIndex];
+		
+		thisIndex = [indexSet indexLessThanIndex:thisIndex];
+    }
 }
 #pragma mark -
 @end
