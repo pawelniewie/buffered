@@ -26,7 +26,7 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
     _updates = [NSMutableDictionary new];
     _buffered = [[Buffered alloc] initApplication:@"Buffered" withId:@"51366c442c4f4e6b02000006" andSecret:@"08a2b9d7c1c2dcc2f17f04d1caf3604b"];
     
-    __block AppDelegate * noRetain = self; // http://stackoverflow.com/questions/7853915/how-do-i-avoid-capturing-self-in-blocks-when-implementing-an-api
+    AppDelegate * __weak noRetain = self; // http://stackoverflow.com/questions/7853915/how-do-i-avoid-capturing-self-in-blocks-when-implementing-an-api
     _updatesHandler = ^(NSString *profileId, NSArray *pending, NSError *error) {
         if (pending != nil) {
             NSMutableArray *copy = [NSMutableArray arrayWithArray:pending];
