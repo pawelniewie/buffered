@@ -291,7 +291,7 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
         for (NSInteger i = row + 1, s = [[self.updatesContent arrangedObjects] count]; i < s; ++i) {
             NSObject *rowContent = [[self.updatesContent arrangedObjects] objectAtIndex:i];
             if ([self isProfileEntity:rowContent]) {
-                profile = (Profile *) rowContent;
+                break;
             } else {
                 [updates addObject:[(NSDictionary *)rowContent objectForKey: @"id"]];
             }
