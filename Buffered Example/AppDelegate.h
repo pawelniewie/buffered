@@ -13,6 +13,7 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTabViewDelegate> {
 @private
     NSMutableArray *_observedVisibleItems;
+    UpdatesCompletionHandler _updatesHandler;
 }
 
 @property (assign) IBOutlet NSWindow *window;

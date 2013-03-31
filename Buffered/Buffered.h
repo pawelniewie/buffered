@@ -11,6 +11,7 @@
 @class GTMOAuth2Authentication;
 
 typedef void(^SignInCompletionHandler)(NSError *error);
+typedef void(^UpdatesCompletionHandler)(NSString *profileId, NSArray *pending, NSError *error);
 
 @interface Buffered : NSObject {
     @private SignInCompletionHandler signInHandler;
@@ -35,7 +36,8 @@ typedef void(^SignInCompletionHandler)(NSError *error);
 #pragma mark -
 
 #pragma mark Updates
-- (void) pendingUpdatesForProfile: (NSString *) profileId withCompletionHandler: (void (^)(NSArray *updates, NSError *error)) handler ;
+- (void) pendingUpdatesForProfile: (NSString *) profileId withCompletionHandler: (UpdatesCompletionHandler) handler ;
+- (void) reorderPendingUpdatesForProfile: (NSString *) profileId withOrder: (NSArray *) updateIds withCompletionHandler: (UpdatesCompletionHandler) handler;
 #pragma mark -
 
 @end

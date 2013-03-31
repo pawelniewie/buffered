@@ -137,20 +137,46 @@
 #pragma mark -
 
 #pragma mark Updates
-- (void) pendingUpdatesForProfile: (NSString *) profileId withCompletionHandler: (void (^)(NSArray *updates, NSError *error)) handler {
+- (void) pendingUpdatesForProfile: (NSString *) profileId withCompletionHandler: (UpdatesCompletionHandler) handler {
     GTMHTTPFetcher* myFetcher = [self newFetcher:[NSString stringWithFormat:@"https://api.bufferapp.com/1/profiles/%@/updates/pending.json", profileId]];
     [myFetcher beginFetchWithCompletionHandler:^(NSData *retrievedData, NSError *error) {
         if (error != nil) {
-            handler(nil, error);
+            handler(profileId, nil, error);
         } else {
             NSDictionary* updates = [NSJSONSerialization
                                  JSONObjectWithData:retrievedData
                                  options:NSJSONReadingMutableLeaves
                                  error:&error];
             if (error != nil) {
-                handler(nil, error);
+                handler(profileId, nil, error);
             } else {
-                handler([updates objectForKey:@"updates"], nil);
+                handler(profileId, [updates objectForKey:@"updates"], nil);
+            }
+        }
+    }];
+}
+
+- (void) reorderPendingUpdatesForProfile: (NSString *) profileId withOrder: (NSArray *) updateIds withCompletionHandler: (UpdatesCompletionHandler) handler {
+    GTMHTTPFetcher* myFetcher = [self newFetcher:[NSString stringWithFormat:@"https://api.bufferapp.com/1/profiles/%@/updates/reorder.json", profileId]];
+    NSMutableString *postData = [NSMutableString new];
+    for (NSString *updateId in updateIds) {
+        [postData appendString: @"order[]="];
+        [postData appendString: updateId];
+        [postData appendString: @"&"];
+    }
+    myFetcher.postData = [postData dataUsingEncoding:NSUTF8StringEncoding];
+    [myFetcher beginFetchWithCompletionHandler:^(NSData *retrievedData, NSError *error) {
+        if (error != nil) {
+            handler(profileId, nil, error);
+        } else {
+            NSDictionary* updates = [NSJSONSerialization
+                                     JSONObjectWithData:retrievedData
+                                     options:NSJSONReadingMutableLeaves
+                                     error:&error];
+            if (error != nil) {
+                handler(profileId, nil, error);
+            } else {
+                handler(profileId, [updates objectForKey:@"updates"], nil);
             }
         }
     }];

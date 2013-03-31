@@ -26,6 +26,15 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
     _updates = [NSMutableDictionary new];
     _buffered = [[Buffered alloc] initApplication:@"Buffered" withId:@"51366c442c4f4e6b02000006" andSecret:@"08a2b9d7c1c2dcc2f17f04d1caf3604b"];
     
+    __block AppDelegate * noRetain = self; // http://stackoverflow.com/questions/7853915/how-do-i-avoid-capturing-self-in-blocks-when-implementing-an-api
+    _updatesHandler = ^(NSString *profileId, NSArray *pending, NSError *error) {
+        if (pending != nil) {
+            NSMutableArray *copy = [NSMutableArray arrayWithArray:pending];
+            [noRetain.updates setObject:copy forKey:profileId];
+            [noRetain performSelectorOnMainThread:@selector(updateTable) withObject:nil waitUntilDone:NO];
+        }
+    };
+    
     [self.updatesTable registerForDraggedTypes:@[DRAG_AND_DROP_TYPE]];
     
     if (![_buffered isSignedIn:YES]) {
@@ -65,18 +74,8 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
 
     [self.profiles setContent:profiles];
     
-    __block NSInteger counter = 0;
     for (Profile *profile in profiles) {
-        __block NSString * profileId = profile.id;
-        [self.buffered pendingUpdatesForProfile:profileId withCompletionHandler:^(NSArray *pending, NSError *error) {
-            if (pending != nil) {
-                NSMutableArray *copy = [NSMutableArray arrayWithArray:pending];
-                [copy addObject:@{ @"text" : [NSString stringWithFormat:@"This is message %ld", (long)counter++] }];
-                [copy addObject:@{ @"text" : [NSString stringWithFormat:@"This is message %ld", (long)counter++] }];
-                [self.updates setObject:copy forKey:profileId];
-                [self performSelectorOnMainThread:@selector(updateTable) withObject:nil waitUntilDone:NO];
-            }
-        }];
+        [self.buffered pendingUpdatesForProfile:profile.id withCompletionHandler:_updatesHandler];
     }
 }
 
@@ -218,7 +217,7 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
                  proposedRow:(NSInteger)row
        proposedDropOperation:(NSTableViewDropOperation)operation {
 
-    if( [info draggingSource] == self.updatesTable ) {
+    if( [info draggingSource] == tv) {
 		if( operation == NSTableViewDropOn ) {
 			[tv setDropRow:row dropOperation:NSTableViewDropAbove];
         }
@@ -228,6 +227,19 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
 	}
 }
 
+// RSRTVArrayController.m
+//
+// RSRTV stands for Red Sweater Reordering Table View Controller.
+//
+// Based on code from Apple's DragNDropOutlineView example, which granted
+// unlimited modification and redistribution rights, provided Apple not be held legally liable.
+//
+// Differences between this file and the original are © 2006 Red Sweater Software.
+//
+// You are granted a non-exclusive, unlimited license to use, reproduce, modify and
+// redistribute this source code in any form provided that you agree to NOT hold liable
+// Red Sweater Software or Daniel Jalkut for any damages caused by such use.
+//
 - (BOOL) tableView:(NSTableView *)tableView acceptDrop:(id<NSDraggingInfo>)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)dropOperation {
     if (row < 0)
 	{
@@ -251,10 +263,41 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
 		rowIndexes = [NSIndexSet indexSetWithIndexesInRange:range];
 		[self.updatesContent setSelectionIndexes:rowIndexes];
 		[self.updatesTable reloadData];
+        NSDictionary * updatedProfile = [self updatesForRow:row];
+        [[self buffered] reorderPendingUpdatesForProfile:[[updatedProfile allKeys] objectAtIndex:0] withOrder:[[updatedProfile allValues] objectAtIndex:0] withCompletionHandler:_updatesHandler];
 		return YES;
     }
 	
     return NO;
+}
+
+/*
+ * Returns all updates for the profile the given row is associated with
+ */
+- (NSDictionary*)updatesForRow:(NSUInteger)row
+{
+    NSMutableArray * updates = [NSMutableArray new];
+    Profile * profile = nil;
+    for (NSInteger i = row; i >= 0; --i) {
+        NSObject *rowContent = [[self.updatesContent arrangedObjects] objectAtIndex:i];
+        if ([self isProfileEntity:rowContent]) {
+            profile = (Profile *) rowContent;
+        } else {
+            [updates addObject:[(NSDictionary *)rowContent objectForKey: @"id"]];
+        }
+    }
+    updates = [NSMutableArray arrayWithArray:[[updates reverseObjectEnumerator] allObjects]];
+    if (row + 1 < [[self.updatesContent arrangedObjects] count]) {
+        for (NSInteger i = row + 1, s = [[self.updatesContent arrangedObjects] count]; i < s; ++i) {
+            NSObject *rowContent = [[self.updatesContent arrangedObjects] objectAtIndex:i];
+            if ([self isProfileEntity:rowContent]) {
+                profile = (Profile *) rowContent;
+            } else {
+                [updates addObject:[(NSDictionary *)rowContent objectForKey: @"id"]];
+            }
+        }
+    }
+    return @{[profile id] : updates};
 }
 
 // RSRTVArrayController.m
