@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Buffered;
+@class Buffered, BUPendingUpdatesViewController;
 
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTabViewDelegate> {
 @private
@@ -17,11 +17,9 @@
 }
 
 @property (assign) IBOutlet NSWindow *window;
+@property (weak) IBOutlet NSView *pendingUpdates;
+
 @property (strong) Buffered *buffered;
-@property (weak) IBOutlet NSProgressIndicator *progress;
-@property (weak) IBOutlet NSTableView *updatesTable;
-@property (strong) NSArrayController *profiles;
-@property (strong) NSMutableDictionary *updates;
-@property (strong) NSArrayController *updatesContent;
+@property (strong) BUPendingUpdatesViewController *pendingUpdatesViewController;
 
 @end
