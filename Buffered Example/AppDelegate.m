@@ -32,15 +32,4 @@
     [_pendingUpdates addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|" options:0 metrics:nil views:views]];
 }
 
--(NSArray*) makeView: (NSView*) _subView fullSizeAs: (NSView*) destination {
-    NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:_subView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:destination attribute:NSLayoutAttributeTop multiplier:1.0 constant:0];
-    
-    NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:_subView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:destination attribute:NSLayoutAttributeRight multiplier:1.0 constant:0];
-    
-    NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:_subView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:destination attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
-    
-    NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:_subView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:destination attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
-    return @[top, bottom, left, right];
-}
-
 @end
