@@ -7,6 +7,14 @@ It's currently under the development so some methods are lacking, any contributi
 # How to get started
 Install Cocoapods if you haven't already (http://cocoapods.org)
 
+## Using Cocoapods
+
+Put following entry in your Podfile:
+
+pod 'Buffered', :git => "https://github.com/pawelniewie/buffered.git"
+
+## Bundling it with your code as a framework
+
 Clone the repository from https://github.com/pawelniewie/buffered
 
 Open terminal and go to the checked out workspace.
@@ -14,7 +22,6 @@ Open terminal and go to the checked out workspace.
 Run "pod install"
 
 Run "open Buffered.xcworkspace"
-
 
 Xcode will start - you can now build Buffered or Buffered Example to check it out.
 
