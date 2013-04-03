@@ -7,9 +7,8 @@
 //
 
 
-#import <Buffered/Buffered.h>
-#import <Buffered/Model.h>
-#import "AppDelegate.h"
+#import "Buffered.h"
+#import "Model.h"
 #import "BUPendingTableCellView.h"
 #import "BUPendingUpdatesViewController.h"
 
@@ -59,10 +58,13 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
 }
 
 - (NSBundle *) bufferedBundle {
+#ifndef POD
     NSString *frameworkBundleID = @"com.pawelniewiadomski.Buffered";
     NSBundle *frameworkBundle = [NSBundle bundleWithIdentifier:frameworkBundleID];
     return frameworkBundle;
-
+#else
+    return nil;
+#endif
 }
 
 - (void) loadProfiles {
