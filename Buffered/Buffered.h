@@ -25,6 +25,7 @@ typedef void(^UpdatesCompletionHandler)(NSString *profileId, NSArray *pending, N
 - (Buffered *) initApplication: (NSString *) appName withId: (NSString *) clientId andSecret: (NSString *) clientSecret;
 
 - (void) signInSheetModalForWindow: (NSWindow *) window withCompletionHandler: (SignInCompletionHandler) error;
+- (void) signInSheetModalForWindow: (NSWindow *) window withCompletionHandler: (SignInCompletionHandler) handler withControllerClass: (NSString *) class;
 - (BOOL) isSignedIn: (BOOL) authorizeFromKeychain;
 
 #pragma mark User

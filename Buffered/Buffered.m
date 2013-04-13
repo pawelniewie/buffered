@@ -51,6 +51,11 @@
 }
 
 - (void) signInSheetModalForWindow: (NSWindow *) window withCompletionHandler: (SignInCompletionHandler) handler {
+    [self signInSheetModalForWindow:window withCompletionHandler:handler withControllerClass: @"GTMOAuth2WindowController"];
+}
+
+- (void) signInSheetModalForWindow: (NSWindow *) window withCompletionHandler: (SignInCompletionHandler) handler
+                withControllerClass: (NSString *) class {
     [self signOut];
     signInHandler = handler;
     
@@ -60,11 +65,11 @@
     
     // Display the authentication view
     GTMOAuth2WindowController *windowController;
-    windowController = [[GTMOAuth2WindowController alloc] initWithAuthentication:auth authorizationURL:authURL keychainItemName:self.applicationName resourceBundle:[self GTMOAuth2Bundle]];
+    windowController = [[NSClassFromString(class) alloc] initWithAuthentication:auth authorizationURL:authURL keychainItemName:self.applicationName resourceBundle:[self GTMOAuth2Bundle]];
     
     [windowController signInSheetModalForWindow:window
-                                 delegate:self
-                         finishedSelector:@selector(windowController:finishedWithAuth:error:)];
+                                       delegate:self
+                               finishedSelector:@selector(windowController:finishedWithAuth:error:)];
 }
 
 - (BOOL)isSignedIn:(BOOL) authorizeFromKeychain {
