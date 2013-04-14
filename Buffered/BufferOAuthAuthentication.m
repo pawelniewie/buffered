@@ -17,7 +17,7 @@
     NSString *joiner = @"";
     for (NSString *key in sortedKeys) {
         NSString *value = [dict objectForKey:key];
-        if (value != nil) {
+        if (![[NSNull null] isEqualTo:value]) {
             NSString *encodedValue = [self encodedOAuthValueForString:value];
             NSString *encodedKey = [self encodedOAuthValueForString:key];
             [result appendFormat:@"%@%@=%@", joiner, encodedKey, encodedValue];
