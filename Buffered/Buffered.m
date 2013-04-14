@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Pawel Niewiadomski. All rights reserved.
 //
 
-#import <GTMOAuth2Authentication.h>
 #import <GTMOAuth2WindowController.h>
 #import "Buffered.h"
+#import "BufferOAuthAuthentication.h"
 #import "Model.h"
 
 @implementation Buffered
@@ -32,7 +32,7 @@
     NSURL *tokenURL = [NSURL URLWithString:@"https://api.bufferapp.com/1/oauth2/token.json"];
     
     GTMOAuth2Authentication *auth;
-    auth = [GTMOAuth2Authentication authenticationWithServiceProvider:self.applicationName
+    auth = [BufferOAuthAuthentication authenticationWithServiceProvider:self.applicationName
                                                              tokenURL:tokenURL
                                                           redirectURI:[GTMOAuth2SignIn nativeClientRedirectURI]
                                                              clientID:self.clientId
