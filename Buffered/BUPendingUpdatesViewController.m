@@ -35,7 +35,7 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
         
         BUPendingUpdatesViewController * __weak noRetain = self; // http://stackoverflow.com/questions/7853915/how-do-i-avoid-capturing-self-in-blocks-when-implementing-an-api
         _updatesHandler = ^(NSString *profileId, NSArray *pending, NSError *error) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:BUPendingUpdatesLoadedNotification object:pending userInfo:@{ @"profiledId" : profileId }];
+            [[NSNotificationCenter defaultCenter] postNotificationName:BUPendingUpdatesLoadedNotification object:pending userInfo:@{ @"profileId" : profileId }];
             if (pending != nil) {
                 NSMutableArray *copy = [NSMutableArray arrayWithArray:pending];
                 [noRetain.updates setObject:copy forKey:profileId];
