@@ -12,6 +12,9 @@
 #import "BUPendingTableCellView.h"
 #import "BUPendingUpdatesViewController.h"
 
+NSString *const BUPendingUpdatesLoadedNotification = @"BUPendingUpdatesLoadedNotification";
+NSString *const BUProfilesLoadedNotification = @"BUProfilesLoadedNotification";
+
 @interface BUPendingUpdatesViewController ()
 
 @end
@@ -32,6 +35,7 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
         
         BUPendingUpdatesViewController * __weak noRetain = self; // http://stackoverflow.com/questions/7853915/how-do-i-avoid-capturing-self-in-blocks-when-implementing-an-api
         _updatesHandler = ^(NSString *profileId, NSArray *pending, NSError *error) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:BUPendingUpdatesLoadedNotification object:pending userInfo:@{ @"profiledId" : profileId }];
             if (pending != nil) {
                 NSMutableArray *copy = [NSMutableArray arrayWithArray:pending];
                 [noRetain.updates setObject:copy forKey:profileId];
@@ -40,6 +44,8 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
         };
         
         [self.updatesTable registerForDraggedTypes:@[DRAG_AND_DROP_TYPE]];
+        
+        [self.progress startAnimation:self];
         
         if (![_buffered isSignedIn:YES]) {
             [_buffered signInSheetModalForWindow:self.view.window withCompletionHandler:^(NSError *error) {
@@ -67,12 +73,17 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
 #endif
 }
 
+/*
+ * Temporary solution just to make it work. This timer and whole quering logic will be moved to a separate class.
+ */
 - (void) loadProfiles {
-    [self.progress startAnimation:self];
-    
     [_buffered profiles:^(NSArray *profiles, NSError *error) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:BUProfilesLoadedNotification object:profiles userInfo:nil];
         if (profiles != nil) {
             [self performSelectorOnMainThread:@selector(updateProfiles:) withObject:profiles waitUntilDone:NO];
+            if (updateTimer == nil) {
+                updateTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(loadProfiles) userInfo:nil repeats:YES];
+            }
         } else {
             [self performSelectorOnMainThread:@selector(reportError:) withObject:error waitUntilDone:NO];
         }

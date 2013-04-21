@@ -10,10 +10,17 @@
 
 @class Buffered;
 
+/*
+ * They will be moved to a separate class in the future.
+ */
+FOUNDATION_EXPORT NSString *const BUPendingUpdatesLoadedNotification;
+FOUNDATION_EXPORT NSString *const BUProfilesLoadedNotification;
+
 @interface BUPendingUpdatesViewController : NSViewController<NSTableViewDataSource, NSTabViewDelegate> {
 @private
     NSMutableArray *_observedVisibleItems;
     UpdatesCompletionHandler _updatesHandler;
+    NSTimer *updateTimer;
 }
 
 @property (weak) IBOutlet NSProgressIndicator *progress;
