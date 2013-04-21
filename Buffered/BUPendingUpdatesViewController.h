@@ -32,5 +32,7 @@ FOUNDATION_EXPORT NSString *const BUProfilesLoadedNotification;
 @property (strong) NSArrayController *updatesContent;
 
 - (id) initWithBuffered: (Buffered *) buffered;
+- (void) loadProfiles;
+- (void) stopTimer;
 
 @end

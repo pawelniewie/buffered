@@ -73,6 +73,13 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
 #endif
 }
 
+- (void) stopTimer {
+    if (updateTimer != nil) {
+        [updateTimer invalidate];
+        updateTimer = nil;
+    }
+}
+
 /*
  * Temporary solution just to make it work. This timer and whole quering logic will be moved to a separate class.
  */
