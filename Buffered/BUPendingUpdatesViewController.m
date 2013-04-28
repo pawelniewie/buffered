@@ -208,11 +208,32 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
             [cell.progressIndicator startAnimation:nil];
             [cell.imageView setHidden:YES];
         } else {
-            [cell.imageView setImage:profile.avatarImage];
+            [cell.progressIndicator setHidden:YES];
+            [cell.imageView setImage:[self resizeImage:profile.avatarImage size:[cell.imageView bounds].size]];
         }
         
         return cell;
     }
+}
+
+- (NSImage*) resizeImage:(NSImage*)sourceImage size:(NSSize)size
+{
+    NSRect targetFrame = NSMakeRect(0, 0, size.width, size.height);
+    NSImage*  targetImage = [[NSImage alloc] initWithSize:size];
+    
+    [targetImage lockFocus];
+    
+    [sourceImage drawInRect:targetFrame
+                   fromRect:NSZeroRect       //portion of source image to draw
+                  operation:NSCompositeCopy  //compositing operation
+                   fraction:1.0              //alpha (transparency) value
+             respectFlipped:YES              //coordinate system
+                      hints:@{NSImageHintInterpolation:
+     [NSNumber numberWithInt:NSImageInterpolationMedium]}];
+    
+    [targetImage unlockFocus];
+    
+    return targetImage;
 }
 
 // We want to make "group rows" for the folders
