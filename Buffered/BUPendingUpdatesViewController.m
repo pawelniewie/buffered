@@ -42,25 +42,29 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
                 [noRetain performSelectorOnMainThread:@selector(updateTable) withObject:nil waitUntilDone:NO];
             }
         };
-        
-        [self.updatesTable registerForDraggedTypes:@[DRAG_AND_DROP_TYPE]];
-        
-        [self.progress startAnimation:self];
-        
-        if (![_buffered isSignedIn:YES]) {
-            [_buffered signInSheetModalForWindow:self.view.window withCompletionHandler:^(NSError *error) {
-                if (error != nil) {
-                    [self reportError:error];
-                } else {
-                    [self performSelectorOnMainThread:@selector(loadProfiles) withObject:nil waitUntilDone:NO];
-                }
-            }];
-        } else {
-            [self performSelectorOnMainThread:@selector(loadProfiles) withObject:nil waitUntilDone:NO];
-        }
     }
     
     return self;
+}
+
+- (void) loadView {
+    [super loadView];
+    
+    [self.updatesTable registerForDraggedTypes:@[DRAG_AND_DROP_TYPE]];
+    
+    [self.progress startAnimation:self];
+    
+    if (![_buffered isSignedIn:YES]) {
+        [_buffered signInSheetModalForWindow:self.view.window withCompletionHandler:^(NSError *error) {
+            if (error != nil) {
+                [self reportError:error];
+            } else {
+                [self performSelectorOnMainThread:@selector(loadProfiles) withObject:nil waitUntilDone:NO];
+            }
+        }];
+    } else {
+        [self performSelectorOnMainThread:@selector(loadProfiles) withObject:nil waitUntilDone:NO];
+    }
 }
 
 - (NSBundle *) bufferedBundle {
@@ -100,7 +104,11 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
 - (void) reportError: (NSError *) error {
     [self.progress stopAnimation:self];
     [self.progress setHidden:YES];
-    [NSApp presentError:error];
+    if (self.delegate != nil) {
+        [self.delegate reportError:error];
+    } else {
+        NSLog(@"Error updating pending updates %@", error);
+    }
 }
 
 - (void) updateProfiles: (NSArray *) profiles {
@@ -245,7 +253,7 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
     if ([self isProfileEntity:[self entityForRow:row]]) {
         return 50;
     } else {
-        return 50;
+        return 30;
     }
 }
 
@@ -338,6 +346,7 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
         NSObject *rowContent = [[self.updatesContent arrangedObjects] objectAtIndex:i];
         if ([self isProfileEntity:rowContent]) {
             profile = (Profile *) rowContent;
+            break;
         } else {
             [updates addObject:[(NSDictionary *)rowContent objectForKey: @"id"]];
         }

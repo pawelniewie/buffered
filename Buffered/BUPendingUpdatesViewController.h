@@ -16,6 +16,12 @@
 FOUNDATION_EXPORT NSString *const BUPendingUpdatesLoadedNotification;
 FOUNDATION_EXPORT NSString *const BUProfilesLoadedNotification;
 
+@protocol BUPendingUpdatesDelegate <NSObject>
+
+- (void) reportError: (NSError*) error;
+
+@end
+
 @interface BUPendingUpdatesViewController : NSViewController<NSTableViewDataSource, NSTabViewDelegate> {
 @private
     NSMutableArray *_observedVisibleItems;
@@ -30,6 +36,7 @@ FOUNDATION_EXPORT NSString *const BUProfilesLoadedNotification;
 @property (strong) NSArrayController *profiles;
 @property (strong) NSMutableDictionary *updates;
 @property (strong) NSArrayController *updatesContent;
+@property (weak) id<BUPendingUpdatesDelegate> delegate;
 
 - (id) initWithBuffered: (Buffered *) buffered;
 - (void) loadProfiles;
