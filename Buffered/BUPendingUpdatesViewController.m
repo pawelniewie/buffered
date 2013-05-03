@@ -177,7 +177,7 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
             [NSAnimationContext beginGrouping];
             [[NSAnimationContext currentContext] setDuration:0.8];
             [cellView.imageView setAlphaValue:0];
-            cellView.imageView.image = entity.avatarImage;
+            cellView.imageView.image = [self resizeImage:entity.avatarImage size:[cellView.imageView bounds].size];
             [cellView.imageView setHidden:NO];
             [[cellView.imageView animator] setAlphaValue:1.0];
             [cellView.progressIndicator setHidden:YES];
