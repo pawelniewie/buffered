@@ -7,7 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BUMonitor.h"
 
-@interface BUProfilesMonitor : NSObject
+@interface BUProfilesMonitor : BUMonitor {
+@private
+    NSMutableArray *_profiles;
+}
+
+@property (strong) NSArray* profiles;
+
+- (id) initWithBuffered: (Buffered *) buffered;
+- (void) refresh;
 
 @end

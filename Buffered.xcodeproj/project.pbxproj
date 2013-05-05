@@ -25,6 +25,10 @@
 		E5A4D43616F6294D00564368 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = E5A4D43416F6294D00564368 /* Model.m */; };
 		E5A79F7C1733EFB2006DDA1E /* BUProfilesMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = E5A79F7A1733EFB2006DDA1E /* BUProfilesMonitor.h */; };
 		E5A79F7D1733EFB2006DDA1E /* BUProfilesMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = E5A79F7B1733EFB2006DDA1E /* BUProfilesMonitor.m */; };
+		E5A79F811736BD65006DDA1E /* BUMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = E5A79F7F1736BD65006DDA1E /* BUMonitor.h */; };
+		E5A79F821736BD65006DDA1E /* BUMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = E5A79F801736BD65006DDA1E /* BUMonitor.m */; };
+		E5A79F851736BE9A006DDA1E /* BUPendingUpdatesMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = E5A79F831736BE9A006DDA1E /* BUPendingUpdatesMonitor.h */; };
+		E5A79F861736BE9A006DDA1E /* BUPendingUpdatesMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = E5A79F841736BE9A006DDA1E /* BUPendingUpdatesMonitor.m */; };
 		E5B0D7E8171B3CEC00ED8B73 /* BufferOAuthAuthentication.h in Headers */ = {isa = PBXBuildFile; fileRef = E5B0D7E6171B3CEC00ED8B73 /* BufferOAuthAuthentication.h */; };
 		E5B0D7E9171B3CEC00ED8B73 /* BufferOAuthAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = E5B0D7E7171B3CEC00ED8B73 /* BufferOAuthAuthentication.m */; };
 		E5E8666E16BEE7AE0030C2A7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5E8666D16BEE7AE0030C2A7 /* Cocoa.framework */; };
@@ -72,6 +76,10 @@
 		E5A4D43416F6294D00564368 /* Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		E5A79F7A1733EFB2006DDA1E /* BUProfilesMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUProfilesMonitor.h; sourceTree = "<group>"; };
 		E5A79F7B1733EFB2006DDA1E /* BUProfilesMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUProfilesMonitor.m; sourceTree = "<group>"; };
+		E5A79F7F1736BD65006DDA1E /* BUMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUMonitor.h; sourceTree = "<group>"; };
+		E5A79F801736BD65006DDA1E /* BUMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUMonitor.m; sourceTree = "<group>"; };
+		E5A79F831736BE9A006DDA1E /* BUPendingUpdatesMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUPendingUpdatesMonitor.h; sourceTree = "<group>"; };
+		E5A79F841736BE9A006DDA1E /* BUPendingUpdatesMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUPendingUpdatesMonitor.m; sourceTree = "<group>"; };
 		E5B0D7E6171B3CEC00ED8B73 /* BufferOAuthAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BufferOAuthAuthentication.h; sourceTree = "<group>"; };
 		E5B0D7E7171B3CEC00ED8B73 /* BufferOAuthAuthentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BufferOAuthAuthentication.m; sourceTree = "<group>"; };
 		E5E8666A16BEE7AE0030C2A7 /* Buffered.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Buffered.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,9 +216,13 @@
 				E5E8667416BEE7AE0030C2A7 /* Supporting Files */,
 				E50628FF1709D7DB00A25452 /* BUPendingUpdatesViewController.h */,
 				E50629001709D7DB00A25452 /* BUPendingUpdatesViewController.m */,
+				E50629011709D7DB00A25452 /* BUPendingUpdatesViewController.xib */,
+				E5A79F7F1736BD65006DDA1E /* BUMonitor.h */,
+				E5A79F801736BD65006DDA1E /* BUMonitor.m */,
 				E5A79F7A1733EFB2006DDA1E /* BUProfilesMonitor.h */,
 				E5A79F7B1733EFB2006DDA1E /* BUProfilesMonitor.m */,
-				E50629011709D7DB00A25452 /* BUPendingUpdatesViewController.xib */,
+				E5A79F831736BE9A006DDA1E /* BUPendingUpdatesMonitor.h */,
+				E5A79F841736BE9A006DDA1E /* BUPendingUpdatesMonitor.m */,
 				E50629051709D82100A25452 /* BUPendingTableCellView.h */,
 				E50629061709D82100A25452 /* BUPendingTableCellView.m */,
 				E5B0D7E6171B3CEC00ED8B73 /* BufferOAuthAuthentication.h */,
@@ -261,6 +273,8 @@
 				E50629071709D82100A25452 /* BUPendingTableCellView.h in Headers */,
 				E5B0D7E8171B3CEC00ED8B73 /* BufferOAuthAuthentication.h in Headers */,
 				E5A79F7C1733EFB2006DDA1E /* BUProfilesMonitor.h in Headers */,
+				E5A79F811736BD65006DDA1E /* BUMonitor.h in Headers */,
+				E5A79F851736BE9A006DDA1E /* BUPendingUpdatesMonitor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +459,8 @@
 				E50629081709D82100A25452 /* BUPendingTableCellView.m in Sources */,
 				E5B0D7E9171B3CEC00ED8B73 /* BufferOAuthAuthentication.m in Sources */,
 				E5A79F7D1733EFB2006DDA1E /* BUProfilesMonitor.m in Sources */,
+				E5A79F821736BD65006DDA1E /* BUMonitor.m in Sources */,
+				E5A79F861736BE9A006DDA1E /* BUPendingUpdatesMonitor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

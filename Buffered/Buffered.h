@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "Model.h"
+
 @class GTMOAuth2Authentication;
 
 typedef void(^SignInCompletionHandler)(NSError *error);
