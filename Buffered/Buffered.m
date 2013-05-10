@@ -135,7 +135,7 @@
 - (NSArray*) asProfiles: (NSArray*) jsonArray {
     NSMutableArray *profiles = [NSMutableArray array];
     for (NSDictionary *json in jsonArray) {
-        [profiles addObject: [[Profile alloc] initWithJSON: json]];
+        [profiles addObject: [[Profile alloc] initWithJSON: json withBuffered:self]];
     }
     return profiles;
 }

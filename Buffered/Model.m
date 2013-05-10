@@ -7,6 +7,7 @@
 //
 
 #import "Model.h"
+#import "BUPendingUpdatesMonitor.h"
 
 static NSOperationQueue *ATSharedOperationQueue() {
     static NSOperationQueue *_ATSharedOperationQueue = nil;
@@ -20,9 +21,10 @@ static NSOperationQueue *ATSharedOperationQueue() {
 
 @implementation JSON
 
-- (id) initWithJSON:(NSDictionary *)json {
+- (id) initWithJSON:(NSDictionary *)json withBuffered:(Buffered *)buffered {
     self = [super init];
     if (self) {
+        _buffered = buffered;
         self.json = [NSMutableDictionary dictionaryWithDictionary:json];
     }
     return self;
@@ -31,6 +33,8 @@ static NSOperationQueue *ATSharedOperationQueue() {
 @end
 
 @implementation Profile
+
+@synthesize updatesMonitor = _updatesMonitor;
 
 - (BOOL) inProgress {
     return YES;
@@ -59,6 +63,13 @@ static NSOperationQueue *ATSharedOperationQueue() {
             }];
         }
     }
+}
+
+- (BUPendingUpdatesMonitor *) updatesMonitor {
+    if (_updatesMonitor == nil) {
+        _updatesMonitor = [[BUPendingUpdatesMonitor alloc] initWithBuffered:self.buffered andProfile:self];
+    }
+    return _updatesMonitor;
 }
 
 @end
