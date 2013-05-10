@@ -32,6 +32,10 @@ static NSOperationQueue *ATSharedOperationQueue() {
 
 @implementation Profile
 
+- (BOOL) inProgress {
+    return YES;
+}
+
 - (NSString*) id {
     return [self.json objectForKey:@"id"];
 }

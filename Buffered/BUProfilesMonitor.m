@@ -26,6 +26,7 @@
         self.inProgress = NO;
         
         if (profiles != nil) {
+            // TODO: need to update only changed profiles to preserve Avatars (and other stuff in the future)
             [self willChangeValueForKey:@"profiles"];
             [_profiles removeAllObjects];
             [_profiles addObjectsFromArray:profiles];

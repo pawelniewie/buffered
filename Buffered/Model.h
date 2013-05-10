@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class BUPendingUpdatesMonitor;
+
 @interface JSON : NSObject
 
 @property (strong) NSDictionary *json;
@@ -21,6 +23,8 @@
 @property (strong) NSImage *avatarImage;
 @property (readonly) BOOL avatarLoading;
 @property (strong, readonly) NSString* id;
+@property (readonly) BOOL inProgress;
+@property (strong, readonly) BUPendingUpdatesMonitor* updatesMonitor;
 
 - (void) loadAvatar;
 
