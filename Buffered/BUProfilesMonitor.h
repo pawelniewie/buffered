@@ -11,10 +11,10 @@
 
 @interface BUProfilesMonitor : BUMonitor {
 @private
-    NSMutableSet *_profiles;
+    NSMutableArray *_profiles;
 }
 
-@property (strong) NSSet* profiles;
+@property (strong) NSArray* profiles;
 
 - (id) initWithBuffered: (Buffered *) buffered;
 - (void) refresh;

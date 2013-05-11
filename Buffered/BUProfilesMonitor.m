@@ -14,7 +14,7 @@
 - (id) initWithBuffered:(Buffered *)buffered {
     self = [super initWithBuffered:buffered];
     if (self) {
-        _profiles = [NSMutableSet new];
+        _profiles = [NSMutableArray new];
     }
     return self;
 }
@@ -26,9 +26,19 @@
         self.inProgress = NO;
         
         if (profiles != nil) {
-            // TODO: need to update only changed profiles to preserve Avatars (and other stuff in the future)
+            // need to update only changed profiles to preserve Avatars (and other stuff in the future)
+            NSMutableArray* newProfiles = [NSMutableArray new];
+            [profiles enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
+                NSUInteger idx = [self.profiles indexOfObject:obj];
+                if (idx != NSNotFound) {
+                    [newProfiles addObject:[self.profiles objectAtIndex:idx]];
+                } else {
+                    [newProfiles addObject:obj];
+                }
+            }];
             [self willChangeValueForKey:@"profiles"];
-            [_profiles addObjectsFromArray:profiles];
+            [_profiles removeAllObjects];
+            [_profiles addObjectsFromArray:newProfiles];
             [self didChangeValueForKey:@"profiles"];
         } else {
             self.lastError = error;
