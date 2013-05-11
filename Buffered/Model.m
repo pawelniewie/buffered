@@ -36,6 +36,17 @@ static NSOperationQueue *ATSharedOperationQueue() {
 
 @synthesize updatesMonitor = _updatesMonitor;
 
+- (BOOL) isEqual:(id)object {
+    if (![object isKindOfClass:[Profile class]]) {
+        return NO;
+    }
+    return [self.id isEqual:((Profile *)object).id];
+}
+
+- (NSUInteger) hash {
+    return [self.id hash];
+}
+
 - (BOOL) inProgress {
     return YES;
 }
