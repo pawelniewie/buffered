@@ -186,6 +186,14 @@
         }
     }];
 }
+
+- (void) removeUpdate: (NSDictionary *) update withCompletionHandler: (RemoveCompletionHandler) handler {
+    GTMHTTPFetcher* myFetcher = [self newFetcher:[NSString stringWithFormat:@"https://api.bufferapp.com/1/updates/%@/destroy.json", [update objectForKey:@"id"]]];
+    myFetcher.postData = [[NSString new] dataUsingEncoding:NSUTF8StringEncoding];
+    [myFetcher beginFetchWithCompletionHandler:^(NSData *retrievedData, NSError *error) {
+        handler([update objectForKey:@"profile_id"]);
+    }];
+}
 #pragma mark -
 
 @end

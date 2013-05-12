@@ -14,6 +14,7 @@
 
 typedef void(^SignInCompletionHandler)(NSError *error);
 typedef void(^UpdatesCompletionHandler)(NSString *profileId, NSArray *pending, NSError *error);
+typedef void(^RemoveCompletionHandler)(NSString *profileId);
 
 @interface Buffered : NSObject {
     @private SignInCompletionHandler signInHandler;
@@ -41,6 +42,7 @@ typedef void(^UpdatesCompletionHandler)(NSString *profileId, NSArray *pending, N
 #pragma mark Updates
 - (void) pendingUpdatesForProfile: (NSString *) profileId withCompletionHandler: (UpdatesCompletionHandler) handler ;
 - (void) reorderPendingUpdatesForProfile: (NSString *) profileId withOrder: (NSArray *) updateIds withCompletionHandler: (UpdatesCompletionHandler) handler;
+- (void) removeUpdate: (NSDictionary *) update withCompletionHandler: (RemoveCompletionHandler) handler;
 #pragma mark -
 
 @end
