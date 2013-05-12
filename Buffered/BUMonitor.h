@@ -23,6 +23,7 @@
 }
 
 @property (assign) BOOL inProgress;
+@property (assign,readonly) BOOL isPooling;
 
 @property (strong) NSError* lastError;
 

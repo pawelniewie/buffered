@@ -27,6 +27,10 @@
 - (void) refresh {
 }
 
+- (BOOL) isPooling {
+    return _updateTimer != nil;
+}
+
 - (void) startPoolingWithInterval:(NSTimeInterval)ti {
     if (_updateTimer != nil) {
         [_updateTimer invalidate];
