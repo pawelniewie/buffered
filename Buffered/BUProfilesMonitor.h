@@ -14,7 +14,7 @@
     NSMutableArray *_profiles;
 }
 
-@property (strong) NSArray* profiles;
+@property (strong, readonly) NSArray* profiles;
 
 - (id) initWithBuffered: (Buffered *) buffered;
 - (void) refresh;

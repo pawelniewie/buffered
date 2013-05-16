@@ -16,8 +16,8 @@
     NSMutableArray *_pendingUpdates;
 }
 
-@property (strong) NSArray *pendingUpdates;
-@property (strong) NSString *profileId;
+@property (strong, readonly) NSArray *pendingUpdates;
+@property (strong, readonly) NSString *profileId;
 
 - (id) initWithBuffered:(Buffered *)buffered andProfile: (Profile *) profile;
 - (void) refresh;

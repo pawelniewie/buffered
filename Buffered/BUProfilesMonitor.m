@@ -27,18 +27,22 @@
         
         if (profiles != nil) {
             // need to update only changed profiles to preserve Avatars (and other stuff in the future)
+            NSArray *currentProfiles = self.profiles;
             NSMutableArray* newProfiles = [NSMutableArray new];
             [profiles enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
-                NSUInteger idx = [self.profiles indexOfObject:obj];
+                NSUInteger idx = [currentProfiles indexOfObject:obj];
                 if (idx != NSNotFound) {
-                    [newProfiles addObject:[self.profiles objectAtIndex:idx]];
+                    [newProfiles addObject:[currentProfiles objectAtIndex:idx]];
                 } else {
                     [newProfiles addObject:obj];
                 }
             }];
+            
             [self willChangeValueForKey:@"profiles"];
-            [_profiles removeAllObjects];
-            [_profiles addObjectsFromArray:newProfiles];
+            @synchronized (self) {
+                [_profiles removeAllObjects];
+                [_profiles addObjectsFromArray:newProfiles];
+            }
             [self didChangeValueForKey:@"profiles"];
         } else {
             self.lastError = error;
@@ -47,6 +51,12 @@
             }
         }
     }];
+}
+
+- (NSArray *) profiles {
+    @synchronized(self) {
+        return [NSArray arrayWithArray:_profiles];
+    }
 }
 
 @end

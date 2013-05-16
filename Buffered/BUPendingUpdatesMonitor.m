@@ -14,7 +14,7 @@
 - (id) initWithBuffered:(Buffered *)buffered andProfile: (Profile *) profile {
     self = [super initWithBuffered:buffered];
     if (self) {
-        self.profileId = profile.id;
+        _profileId = profile.id;
         _pendingUpdates = [NSMutableArray new];
     }
     return self;
@@ -29,8 +29,10 @@
               
               if (pending != nil) {
                   [self willChangeValueForKey:@"pendingUpdates"];
-                  [_pendingUpdates removeAllObjects];
-                  [_pendingUpdates addObjectsFromArray:pending];
+                  @synchronized (self) {
+                      [_pendingUpdates removeAllObjects];
+                      [_pendingUpdates addObjectsFromArray:pending];
+                  }
                   [self didChangeValueForKey:@"pendingUpdates"];
               } else {
                   self.lastError = error;
@@ -39,6 +41,12 @@
                   }
               }
           }];
+}
+
+- (NSArray *) pendingUpdates {
+    @synchronized(self) {
+        return [NSArray arrayWithArray:_pendingUpdates];
+    }
 }
 
 @end
