@@ -43,6 +43,7 @@ typedef void(^RemoveCompletionHandler)(NSString *profileId);
 - (void) pendingUpdatesForProfile: (NSString *) profileId withCompletionHandler: (UpdatesCompletionHandler) handler ;
 - (void) reorderPendingUpdatesForProfile: (NSString *) profileId withOrder: (NSArray *) updateIds withCompletionHandler: (UpdatesCompletionHandler) handler;
 - (void) removeUpdate: (NSDictionary *) update withCompletionHandler: (RemoveCompletionHandler) handler;
+- (void) shareUpdate: (NSDictionary *) update withCompletionHandler: (RemoveCompletionHandler) handler;
 #pragma mark -
 
 @end

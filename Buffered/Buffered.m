@@ -194,6 +194,15 @@
         handler([update objectForKey:@"profile_id"]);
     }];
 }
+
+- (void) shareUpdate: (NSDictionary *) update withCompletionHandler: (RemoveCompletionHandler) handler {
+    GTMHTTPFetcher* myFetcher = [self newFetcher:[NSString stringWithFormat:@"https://api.bufferapp.com/1/updates/%@/share.json", [update objectForKey:@"id"]]];
+    myFetcher.postData = [[NSString new] dataUsingEncoding:NSUTF8StringEncoding];
+    [myFetcher beginFetchWithCompletionHandler:^(NSData *retrievedData, NSError *error) {
+        handler([update objectForKey:@"profile_id"]);
+    }];
+}
+
 #pragma mark -
 
 @end
