@@ -13,7 +13,7 @@
 
 @implementation Buffered
 
-- (Buffered *) initApplication: (NSString *) appName withId: (NSString *) clientId andSecret: (NSString *) clientSecret {
+- (instancetype) initApplication: (NSString *) appName withId: (NSString *) clientId andSecret: (NSString *) clientSecret {
     self = [self init];
     if (self) {
         _applicationName = appName;

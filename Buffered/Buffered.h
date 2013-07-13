@@ -25,7 +25,7 @@ typedef void(^RemoveCompletionHandler)(NSString *profileId);
 @property (strong, readonly) NSString *clientId;
 @property (strong, readonly) NSString *clientSecret;
 
-- (Buffered *) initApplication: (NSString *) appName withId: (NSString *) clientId andSecret: (NSString *) clientSecret;
+- (instancetype) initApplication: (NSString *) appName withId: (NSString *) clientId andSecret: (NSString *) clientSecret;
 
 - (void) signInSheetModalForWindow: (NSWindow *) window withCompletionHandler: (SignInCompletionHandler) error;
 - (void) signInSheetModalForWindow: (NSWindow *) window withCompletionHandler: (SignInCompletionHandler) handler withControllerClass: (NSString *) class;
