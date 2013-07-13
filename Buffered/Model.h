@@ -17,7 +17,7 @@
 
 - (id) initWithJSON: (NSDictionary *) json withBuffered: (Buffered *) buffered;
 - (id) objectAtKeyedSubscript: (id<NSCopying>) key;
-- (void) setObject: (id) object forKeyedSubscript:(id<NSCopying>)key;
+//- (void) setObject: (id) object forKeyedSubscript:(id<NSCopying>)key;
 
 @end
 

@@ -34,9 +34,9 @@ static NSOperationQueue *ATSharedOperationQueue() {
     return self.json[key];
 }
 
-- (void) setObject: (id) object forKeyedSubscript:(id<NSCopying>)key {
-    self.json[key] = object;
-}
+//- (void) setObject: (id) object forKeyedSubscript:(id<NSCopying>)key {
+//    self.json[key] = object;
+//}
 
 @end
 
