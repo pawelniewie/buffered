@@ -44,6 +44,10 @@ static NSOperationQueue *ATSharedOperationQueue() {
 
 @synthesize updatesMonitor = _updatesMonitor;
 
+- (id) objectAtKeyedSubscript: (id<NSCopying>) key {
+    return self.json[key];
+}
+
 - (BOOL) isEqual:(id)object {
     if (![object isKindOfClass:[Profile class]]) {
         return NO;
@@ -93,3 +97,24 @@ static NSOperationQueue *ATSharedOperationQueue() {
 
 @end
 
+@implementation BUNewUpdate
+
+- (instancetype) init {
+    self = [super init];
+    if (self) {
+        self.shortenLinks = YES;
+    }
+    return self;
+}
+
++ (instancetype) updateWithText: (NSString *) text andProfiles: (NSArray *) profiles {
+    BUNewUpdate * update = [BUNewUpdate new];
+    update.text = text;
+    __block NSMutableArray *profileIds = [NSMutableArray new];
+    [profiles enumerateObjectsUsingBlock:^(Profile* profile, NSUInteger idx, BOOL *stop) {
+        [profileIds addObject: profile.id];
+    }];
+    return [update copy];
+}
+
+@end

@@ -32,6 +32,20 @@
 
 @end
 
-@interface Update : JSON<NSPasteboardReading, NSPasteboardWriting>
+/*
+ *
+ */
+@interface BUNewUpdate : NSObject
+
+@property (strong) NSString * text;
+@property (strong) NSArray *profileIds;
+@property (assign) BOOL shortenLinks;
+@property (assign) BOOL shareNow;
+@property (assign) BOOL moveToTop;
+@property (strong) NSDictionary *media;
+
+- (instancetype) init;
+
++ (instancetype) updateWithText: (NSString *) text andProfiles: (NSArray *) profiles;
 
 @end

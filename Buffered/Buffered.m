@@ -203,6 +203,34 @@
     }];
 }
 
+- (void) createUpdate: (BUNewUpdate*) update withCompletionHandler: (CreateUpdateCompletionHandler) handler {
+    GTMHTTPFetcher* myFetcher = [self newFetcher:@"https://api.bufferapp.com/1/updates/create.json"];
+    __block NSMutableString *postData = [NSMutableString new];
+    [postData appendString: @"text="];
+    [postData appendString: [update.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    [postData appendString: @"&profile_ids[]="];
+    [postData appendString: [update.profileIds componentsJoinedByString:@"&profile_ids[]="]];
+    [postData appendString: @"&shorten="];
+    [postData appendString: update.shortenLinks ? @"true" : @"false"];
+    [postData appendString: @"&now="];
+    [postData appendString: update.shareNow ? @"true" : @"false"];
+    [postData appendString: @"&top="];
+    [postData appendString: update.moveToTop ? @"true" : @"false"];
+    if (update.media != nil) {
+        [update.media enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSString* obj, BOOL *stop) {
+            [postData appendString: @"&"];
+            [postData appendString: key];
+            [postData appendString: @"="];
+            [postData appendString: [obj stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        }];
+    }
+    
+    myFetcher.postData = [postData dataUsingEncoding:NSUTF8StringEncoding];
+    [myFetcher beginFetchWithCompletionHandler:^(NSData *retrievedData, NSError *error) {
+        handler(error);
+    }];
+}
+
 #pragma mark -
 
 @end

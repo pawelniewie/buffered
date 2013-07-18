@@ -13,6 +13,7 @@
 @class GTMOAuth2Authentication;
 
 typedef void(^SignInCompletionHandler)(NSError *error);
+typedef void(^CreateUpdateCompletionHandler)(NSError *error);
 typedef void(^UpdatesCompletionHandler)(NSString *profileId, NSArray *pending, NSError *error);
 typedef void(^RemoveCompletionHandler)(NSString *profileId);
 
@@ -44,6 +45,7 @@ typedef void(^RemoveCompletionHandler)(NSString *profileId);
 - (void) reorderPendingUpdatesForProfile: (NSString *) profileId withOrder: (NSArray *) updateIds withCompletionHandler: (UpdatesCompletionHandler) handler;
 - (void) removeUpdate: (NSDictionary *) update withCompletionHandler: (RemoveCompletionHandler) handler;
 - (void) shareUpdate: (NSDictionary *) update withCompletionHandler: (RemoveCompletionHandler) handler;
+- (void) createUpdate: (BUNewUpdate*) update withCompletionHandler: (CreateUpdateCompletionHandler) handler;
 #pragma mark -
 
 @end
