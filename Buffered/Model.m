@@ -64,7 +64,7 @@ static NSOperationQueue *ATSharedOperationQueue() {
 }
 
 - (NSString*) id {
-    return [self.json objectForKey:@"id"];
+    return self.json[@"id"];
 }
 
 - (void) loadAvatar {
@@ -114,7 +114,8 @@ static NSOperationQueue *ATSharedOperationQueue() {
     [profiles enumerateObjectsUsingBlock:^(Profile* profile, NSUInteger idx, BOOL *stop) {
         [profileIds addObject: profile.id];
     }];
-    return [update copy];
+    update.profileIds = profileIds;
+    return update;
 }
 
 @end
