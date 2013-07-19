@@ -16,7 +16,7 @@
 @property (weak, readonly) Buffered *buffered;
 
 - (id) initWithJSON: (NSDictionary *) json withBuffered: (Buffered *) buffered;
-- (id) objectForKeyedSubscript: (id<NSCopying>) key;
+- (id) objectForKeyedSubscript: (id) key;
 //- (void) setObject: (id) object forKeyedSubscript:(id<NSCopying>)key;
 
 @end
