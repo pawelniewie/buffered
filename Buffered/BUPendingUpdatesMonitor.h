@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "BUMonitor.h"
 
-@class Profile;
+@class BUProfile;
 
 @interface BUPendingUpdatesMonitor : BUMonitor {
 @private
@@ -19,7 +19,7 @@
 @property (strong, readonly) NSArray *pendingUpdates;
 @property (strong, readonly) NSString *profileId;
 
-- (id) initWithBuffered:(Buffered *)buffered andProfile: (Profile *) profile;
+- (id) initWithBuffered:(Buffered *)buffered andProfile: (BUProfile *) profile;
 - (void) refresh;
 
 @end

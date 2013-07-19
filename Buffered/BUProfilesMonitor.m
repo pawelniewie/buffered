@@ -32,7 +32,7 @@
             [profiles enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
                 NSUInteger idx = [currentProfiles indexOfObject:obj];
                 if (idx != NSNotFound) {
-                    [newProfiles addObject:[currentProfiles objectAtIndex:idx]];
+                    [newProfiles addObject:currentProfiles[idx]];
                 } else {
                     [newProfiles addObject:obj];
                 }

@@ -135,13 +135,21 @@
 - (NSArray*) asProfiles: (NSArray*) jsonArray {
     NSMutableArray *profiles = [NSMutableArray array];
     for (NSDictionary *json in jsonArray) {
-        [profiles addObject: [[Profile alloc] initWithJSON: json withBuffered:self]];
+        [profiles addObject: [[BUProfile alloc] initWithJSON: json withBuffered:self]];
     }
     return profiles;
 }
 #pragma mark -
 
 #pragma mark Updates
+- (NSArray*) asPendingUpdates: (NSArray*) jsonArray {
+    NSMutableArray *updates = [NSMutableArray array];
+    for (NSDictionary *json in jsonArray) {
+        [updates addObject: [[BUPendingUpdate alloc] initWithJSON: json withBuffered:self]];
+    }
+    return updates;
+}
+
 - (void) pendingUpdatesForProfile: (NSString *) profileId withCompletionHandler: (UpdatesCompletionHandler) handler {
     GTMHTTPFetcher* myFetcher = [self newFetcher:[NSString stringWithFormat:@"https://api.bufferapp.com/1/profiles/%@/updates/pending.json", profileId]];
     [myFetcher beginFetchWithCompletionHandler:^(NSData *retrievedData, NSError *error) {
@@ -155,7 +163,7 @@
             if (error != nil) {
                 handler(profileId, nil, error);
             } else {
-                handler(profileId, [updates objectForKey:@"updates"], nil);
+                handler(profileId, [self asPendingUpdates:updates[@"updates"]], nil);
             }
         }
     }];
@@ -181,25 +189,25 @@
             if (error != nil) {
                 handler(profileId, nil, error);
             } else {
-                handler(profileId, [updates objectForKey:@"updates"], nil);
+                handler(profileId, [self asPendingUpdates:updates[@"updates"]], nil);
             }
         }
     }];
 }
 
 - (void) removeUpdate: (NSDictionary *) update withCompletionHandler: (RemoveCompletionHandler) handler {
-    GTMHTTPFetcher* myFetcher = [self newFetcher:[NSString stringWithFormat:@"https://api.bufferapp.com/1/updates/%@/destroy.json", [update objectForKey:@"id"]]];
+    GTMHTTPFetcher* myFetcher = [self newFetcher:[NSString stringWithFormat:@"https://api.bufferapp.com/1/updates/%@/destroy.json", update[@"id"]]];
     myFetcher.postData = [[NSString new] dataUsingEncoding:NSUTF8StringEncoding];
     [myFetcher beginFetchWithCompletionHandler:^(NSData *retrievedData, NSError *error) {
-        handler([update objectForKey:@"profile_id"]);
+        handler(update[@"profile_id"]);
     }];
 }
 
 - (void) shareUpdate: (NSDictionary *) update withCompletionHandler: (RemoveCompletionHandler) handler {
-    GTMHTTPFetcher* myFetcher = [self newFetcher:[NSString stringWithFormat:@"https://api.bufferapp.com/1/updates/%@/share.json", [update objectForKey:@"id"]]];
+    GTMHTTPFetcher* myFetcher = [self newFetcher:[NSString stringWithFormat:@"https://api.bufferapp.com/1/updates/%@/share.json", update[@"id"]]];
     myFetcher.postData = [[NSString new] dataUsingEncoding:NSUTF8StringEncoding];
     [myFetcher beginFetchWithCompletionHandler:^(NSData *retrievedData, NSError *error) {
-        handler([update objectForKey:@"profile_id"]);
+        handler(update[@"profile_id"]);
     }];
 }
 

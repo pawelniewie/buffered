@@ -10,7 +10,7 @@
 
 @class BUPendingUpdatesMonitor, Buffered;
 
-@interface JSON : NSObject
+@interface BUJSON : NSObject
 
 @property (strong) NSDictionary *json;
 @property (weak, readonly) Buffered *buffered;
@@ -21,7 +21,7 @@
 
 @end
 
-@interface Profile : JSON
+@interface BUProfile : BUJSON
 
 @property (strong) NSImage *avatarImage;
 @property (readonly) BOOL avatarLoading;
@@ -29,7 +29,11 @@
 @property (strong, readonly) BUPendingUpdatesMonitor* updatesMonitor;
 
 - (void) loadAvatar;
+- (BOOL) isTwitter;
 
+@end
+
+@interface BUPendingUpdate : BUJSON
 @end
 
 /*

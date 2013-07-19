@@ -16,7 +16,7 @@
     NSArray *sortedKeys = [[dict allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     NSString *joiner = @"";
     for (NSString *key in sortedKeys) {
-        NSString *value = [dict objectForKey:key];
+        NSString *value = dict[key];
         if (![[NSNull null] isEqualTo:value]) {
             NSString *encodedValue = [self encodedOAuthValueForString:value];
             NSString *encodedKey = [self encodedOAuthValueForString:key];

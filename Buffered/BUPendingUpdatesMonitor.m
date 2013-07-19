@@ -11,7 +11,7 @@
 
 @implementation BUPendingUpdatesMonitor
 
-- (id) initWithBuffered:(Buffered *)buffered andProfile: (Profile *) profile {
+- (id) initWithBuffered:(Buffered *)buffered andProfile: (BUProfile *) profile {
     self = [super initWithBuffered:buffered];
     if (self) {
         _profileId = profile.id;

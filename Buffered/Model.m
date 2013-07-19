@@ -19,7 +19,7 @@ static NSOperationQueue *ATSharedOperationQueue() {
     return _ATSharedOperationQueue;
 }
 
-@implementation JSON
+@implementation BUJSON
 
 - (id) initWithJSON:(NSDictionary *)json withBuffered:(Buffered *)buffered {
     self = [super init];
@@ -40,19 +40,30 @@ static NSOperationQueue *ATSharedOperationQueue() {
 
 @end
 
-@implementation Profile
+@implementation BUPendingUpdate
+
+- (BOOL) isEqual:(id)object {
+    if (![object isKindOfClass:[BUPendingUpdate class]]) {
+        return NO;
+    }
+    return [self.json[@"id"] isEqual:((BUPendingUpdate *)object).json[@"id"]];
+}
+
+- (NSUInteger) hash {
+    return [self.json[@"id"] hash];
+}
+
+@end
+
+@implementation BUProfile
 
 @synthesize updatesMonitor = _updatesMonitor;
 
-- (id) objectAtKeyedSubscript: (id<NSCopying>) key {
-    return self.json[key];
-}
-
 - (BOOL) isEqual:(id)object {
-    if (![object isKindOfClass:[Profile class]]) {
+    if (![object isKindOfClass:[BUProfile class]]) {
         return NO;
     }
-    return [self.id isEqual:((Profile *)object).id];
+    return [self.id isEqual:((BUProfile *)object).id];
 }
 
 - (NSUInteger) hash {
@@ -67,13 +78,17 @@ static NSOperationQueue *ATSharedOperationQueue() {
     return self.json[@"id"];
 }
 
+- (BOOL) isTwitter {
+    return [@"twitter" isEqualToString: self.json[@"service"]];
+}
+
 - (void) loadAvatar {
     @synchronized (self) {
         if (self.avatarImage == nil && !self.avatarLoading) {
             _avatarLoading = YES;
             // We would have to keep track of the block with an NSBlockOperation, if we wanted to later support cancelling operations that have scrolled offscreen and are no longer needed. That will be left as an exercise to the user.
             [ATSharedOperationQueue() addOperationWithBlock:^(void) {
-                NSImage *image = [[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:[self.json objectForKey:@"avatar"]]];
+                NSImage *image = [[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:(self.json)[@"avatar"]]];
                 if (image != nil) {
                     // We synchronize access to the image/imageLoading pair of variables
                     @synchronized (self) {
@@ -111,7 +126,7 @@ static NSOperationQueue *ATSharedOperationQueue() {
     BUNewUpdate * update = [BUNewUpdate new];
     update.text = text;
     __block NSMutableArray *profileIds = [NSMutableArray new];
-    [profiles enumerateObjectsUsingBlock:^(Profile* profile, NSUInteger idx, BOOL *stop) {
+    [profiles enumerateObjectsUsingBlock:^(BUProfile* profile, NSUInteger idx, BOOL *stop) {
         [profileIds addObject: profile.id];
     }];
     update.profileIds = profileIds;
