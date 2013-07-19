@@ -118,7 +118,7 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
     [self.profiles setContent:profiles];
     
     for (BUProfile *profile in profiles) {
-        [self.buffered pendingUpdatesForProfile:profile.id withCompletionHandler:_updatesHandler];
+        [self.buffered pendingUpdatesForProfile:profile[@"id"] withCompletionHandler:_updatesHandler];
     }
 }
 
@@ -126,7 +126,7 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
     NSMutableArray *newContent = [NSMutableArray new];
     for (BUProfile *profile in self.profiles.arrangedObjects) {
         [newContent addObject:profile];
-        NSArray *updates = (self.updates)[profile.id];
+        NSArray *updates = (self.updates)[profile[@"id"]];
         [newContent addObjectsFromArray:updates];
     }
     self.updatesContent.content = newContent;
@@ -348,7 +348,7 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
             profile = (BUProfile *) rowContent;
             break;
         } else {
-            [updates addObject:((BUPendingUpdate *)rowContent).json[@"id"]];
+            [updates addObject:((BUPendingUpdate *)rowContent)[@"id"]];
         }
     }
     updates = [NSMutableArray arrayWithArray:[[updates reverseObjectEnumerator] allObjects]];
@@ -358,11 +358,11 @@ static NSString *DRAG_AND_DROP_TYPE = @"Update Data";
             if ([self isProfileEntity:rowContent]) {
                 break;
             } else {
-                [updates addObject:((BUPendingUpdate *)rowContent).json[@"id"]];
+                [updates addObject:((BUPendingUpdate *)rowContent)[@"id"]];
             }
         }
     }
-    return @{[profile id] : updates};
+    return @{profile[@"id"] : updates};
 }
 
 // RSRTVArrayController.m

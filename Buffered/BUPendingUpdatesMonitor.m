@@ -14,7 +14,7 @@
 - (id) initWithBuffered:(Buffered *)buffered andProfile: (BUProfile *) profile {
     self = [super initWithBuffered:buffered];
     if (self) {
-        _profileId = profile.id;
+        _profileId = profile[@"id"];
         _pendingUpdates = [NSMutableArray new];
     }
     return self;

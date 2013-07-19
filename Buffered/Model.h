@@ -16,7 +16,7 @@
 @property (weak, readonly) Buffered *buffered;
 
 - (id) initWithJSON: (NSDictionary *) json withBuffered: (Buffered *) buffered;
-- (id) objectAtKeyedSubscript: (id<NSCopying>) key;
+- (id) objectForKeyedSubscript: (id<NSCopying>) key;
 //- (void) setObject: (id) object forKeyedSubscript:(id<NSCopying>)key;
 
 @end
@@ -25,7 +25,6 @@
 
 @property (strong) NSImage *avatarImage;
 @property (readonly) BOOL avatarLoading;
-@property (strong, readonly) NSString* id;
 @property (strong, readonly) BUPendingUpdatesMonitor* updatesMonitor;
 
 - (void) loadAvatar;
@@ -34,6 +33,7 @@
 @end
 
 @interface BUPendingUpdate : BUJSON
+
 @end
 
 /*

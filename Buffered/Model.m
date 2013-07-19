@@ -30,7 +30,7 @@ static NSOperationQueue *ATSharedOperationQueue() {
     return self;
 }
 
-- (id) objectAtKeyedSubscript: (id<NSCopying>) key {
+- (id) objectForKeyedSubscript: (id<NSCopying>) key {
     return self.json[key];
 }
 
