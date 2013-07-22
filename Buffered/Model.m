@@ -38,6 +38,13 @@ static NSOperationQueue *ATSharedOperationQueue() {
 //    self.json[key] = object;
 //}
 
+- (id)valueForKey:(NSString *)key {
+    id value = [self.json valueForKey:key];
+    if (value != nil) {
+        return value;
+    }
+    return [super valueForKey:key];
+}
 @end
 
 @implementation BUPendingUpdate

@@ -19,6 +19,8 @@
 - (id) objectForKeyedSubscript: (id) key;
 //- (void) setObject: (id) object forKeyedSubscript:(id<NSCopying>)key;
 
+- (id)valueForKey:(NSString *)key;
+
 @end
 
 @interface BUProfile : BUJSON
