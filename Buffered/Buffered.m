@@ -24,6 +24,10 @@
     return self;
 }
 
+- (void) signOut {
+    [GTMOAuth2WindowController removeAuthFromKeychainForName:self.applicationName];
+}
+
 - (BOOL) authorizeFromKeychain {
     return [GTMOAuth2WindowController authorizeFromKeychainForName:self.applicationName authentication:self.authentication];
 }
@@ -38,10 +42,6 @@
                                                              clientID:self.clientId
                                                          clientSecret:self.clientSecret];
     return auth;
-}
-
-- (void)signOut {
-
 }
 
 - (NSBundle *) GTMOAuth2Bundle {

@@ -31,6 +31,7 @@ typedef void(^RemoveCompletionHandler)(NSString *profileId);
 - (void) signInSheetModalForWindow: (NSWindow *) window withCompletionHandler: (SignInCompletionHandler) error;
 - (void) signInSheetModalForWindow: (NSWindow *) window withCompletionHandler: (SignInCompletionHandler) handler withControllerClass: (NSString *) class;
 - (BOOL) isSignedIn: (BOOL) authorizeFromKeychain;
+- (void) signOut;
 
 #pragma mark User
 - (void) user: (void (^)(NSDictionary *user, NSError *error)) handler;
