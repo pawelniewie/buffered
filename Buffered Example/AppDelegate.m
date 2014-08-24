@@ -8,7 +8,7 @@
 
 #import <Buffered/Buffered.h>
 #import <Buffered/Model.h>
-#import <Buffered/BUPendingUpdatesViewController.h>
+#import "BUPendingUpdatesViewController.h"
 
 #import "AppDelegate.h"
 

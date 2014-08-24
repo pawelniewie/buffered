@@ -1,0 +1,16 @@
+PODS:
+  - gtm-oauth2 (0.1.0):
+    - GTMHTTPFetcher
+  - GTMHTTPFetcher (0.1.0)
+  - OCMock (2.2.4)
+
+DEPENDENCIES:
+  - gtm-oauth2
+  - OCMock
+
+SPEC CHECKSUMS:
+  gtm-oauth2: 64f2d404a50676ab63b5437a02a7567da8f8b7fa
+  GTMHTTPFetcher: 0f02d5a5803dd08736462981064de6a7f59cf9bd
+  OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
+
+COCOAPODS: 0.33.1
